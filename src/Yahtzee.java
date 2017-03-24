@@ -10,11 +10,22 @@ public class Yahtzee {
 	private List<Mängija> mängijad = new ArrayList<>();
 	
 	
+	// Tagastab mängijate koopia, et mängijate nimekirja ei saaks tagastatud listi kaudu muuta
+	public List<Mängija> getMängijad() {
+		List<Mängija> mängijateKoopia = new ArrayList<>();
+		for (Mängija m : this.mängijad) {
+			mängijateKoopia.add(m);
+		}
+		return mängijateKoopia;
+	}
+	
 	
 	public void lisaMängija(Mängija mängija) {
 		mängijad.add(mängija);
 	}
 	
+
+	// Mängujuhendi näitamine
 	public void näitaJuhendit() {
 		String juhend = "";
 		File fail = new File(juhendiFail);
@@ -32,7 +43,8 @@ public class Yahtzee {
 		System.out.println(juhend);
 		
 	}
-
+	
+	// Juhendi lugemine failist
 	private String loeFailist(Scanner sc) {
 		StringBuilder text = new StringBuilder();
 		while (sc.hasNextLine()) {
