@@ -10,13 +10,15 @@ public class PeaKlass {
 
 	public static void main(String[] args) {
 		
-		Yahtzee yatzyMäng = new Yahtzee();		
+		Yahtzee yatzyMäng = new Yahtzee();
+		// Muutuja kasutaja sisendite jaoks
 		Scanner scKasutajalt =  new Scanner(System.in);
+		// 1-4 mängijat.
 		int mängijateArv = 0;
 		String kasutajaSisend;
 		boolean mängLõppenud = false;
+		Tops tops = new Tops();
 		
-		// Muutuja kasutaja sisendite jaoks
 		System.out.println("Kas soovid mängujuhendit näha? (Y/N)");
 		kasutajaSisend = scKasutajalt.nextLine();
 		
@@ -38,7 +40,7 @@ public class PeaKlass {
 		}
 		
 		// Mängijate lisamine
-		System.out.println("Palun mängijate nimed.");
+		System.out.println("Palun sisesta mängijate nimed.");
 		for (int i = 1; i <= mängijateArv; i++) {
 			System.out.println("Mängija nr. " + i);
 			kasutajaSisend = scKasutajalt.nextLine();			
@@ -55,12 +57,34 @@ public class PeaKlass {
 				System.out.println(mängija + " käik");
 				
 				// Igal mängijal on võimalik kolm korda täringuid veeretada. 
-				for (int j = 1; j <= 3; j++) {
-					System.out.println("Veeretamisvoor. " + j);
+				//for (int j = 1; j <= 3; j++) {
+					System.out.println("Veeretamisvoor. " + 1);
+						tops.viskering();	
+		
 					// Muud Täringute veeretamise valik. Mõte praegu võtta sõne, teha split ja set numbritest 1-5.
 					// Kõiki muid sisendeid võiks ignoreerida.
-					System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)");					
-				}
+					
+					System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)");
+					kasutajaSisend = scKasutajalt.nextLine();
+					String [] valik=kasutajaSisend.split("");
+					
+					if (kasutajaSisend ==""){
+						break;
+					}
+					System.out.println("Veeretamisvoor. " + 2);
+					tops.viskering(valik);
+					
+					System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)");
+					kasutajaSisend = scKasutajalt.nextLine();
+					valik=kasutajaSisend.split("");
+					
+					if (kasutajaSisend ==""){
+						break;
+					}
+					System.out.println("Veeretamisvoor. " + 3);
+					tops.viskering(valik);
+					System.out.println("Voor läbi");
+				//}
 			}
 			mängLõppenud = true;
 			
