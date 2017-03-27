@@ -1,3 +1,5 @@
+import java.util.List;
+import java.util.Scanner;
 
 public class Mängija {
 
@@ -26,6 +28,20 @@ public class Mängija {
 	@Override
 	public String toString(){
 		return "Nimi: "+ mängijaNimi + "\n\n" + skooriTabel.toString();
+	}
+	
+	public void salvestaTulemus(List<Täring> tulemus, Scanner scKasutajalt){
+		
+		System.out.println("Sinu vooru tulemus on: ");
+		for (Täring t: tulemus){
+			System.out.println(t.toString());
+		}
+		System.out.println("Sinu hetke skoor on: ");
+		System.out.println(skooriTabel);
+		System.out.println("Vali tühi lahter kuhu oma skoor salvestada!");
+		String kasutajaSisend = scKasutajalt.nextLine();
+		
+		
 	}
 	
 }
