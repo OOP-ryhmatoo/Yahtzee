@@ -15,6 +15,7 @@ public class PeaKlass {
 		int mängijateArv = 0;
 		String kasutajaSisend;
 		boolean mängLõppenud = false;
+		Tops tops = new Tops();
 		
 		// Muutuja kasutaja sisendite jaoks
 		System.out.println("Kas soovid mängujuhendit näha? (Y/N)");
@@ -52,22 +53,57 @@ public class PeaKlass {
 		while (!mängLõppenud) {
 			
 			for (Mängija mängija : mängijad) {
-				System.out.println(mängija + " käik");
+				System.out.println(mängija);
 				
 				// Igal mängijal on võimalik kolm korda täringuid veeretada. 
-				for (int j = 1; j <= 3; j++) {
+				for (int j = 1; j < 4; j++) {
+					if (j==1){
 					System.out.println("Veeretamisvoor. " + j);
-					// Muud Täringute veeretamise valik. Mõte praegu võtta sõne, teha split ja set numbritest 1-5.
-					// Kõiki muid sisendeid võiks ignoreerida.
-					System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)");					
+						tops.viskering();
+					}
+					else{
+						
+						// Muud Täringute veeretamise valik. Mõte praegu võtta sõne, teha split ja set numbritest 1-5.
+						// Kõiki muid sisendeid võiks ignoreerida.
+						
+						System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)"
+								+ "\nKui uuesti veeretada ei taha, vajuta midagi sisestamata Enter.");
+						kasutajaSisend = scKasutajalt.nextLine();
+						String [] valik=kasutajaSisend.split("");
+						
+						if (kasutajaSisend ==""){
+							break;
+						}
+						System.out.println("Veeretamisvoor. " + 2);
+						tops.viskering(valik);
+						
+						System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)"
+								+ "\nKui uuesti veeretada ei taha, vajuta midagi sisestamata Enter.");
+						kasutajaSisend = scKasutajalt.nextLine();
+						valik=kasutajaSisend.split("");
+						
+						if (kasutajaSisend ==""){
+							break;
+						}
+						System.out.println("Veeretamisvoor. " + 3);
+						tops.viskering(valik);
+						System.out.println("Voor läbi");
+					}
 				}
-			}
+				
+				
+				//Skoori salvestamine
+				mängija.salvestaTulemus(tops.getTäringud(), scKasutajalt);
+				
+				
 			mängLõppenud = true;
 			
 		}
 
 
 		scKasutajalt.close();
+		
 	}
 
+}
 }
