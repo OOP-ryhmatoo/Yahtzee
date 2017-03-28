@@ -5,7 +5,7 @@ public class Mängija {
 
 	private String mängijaNimi;
 	private Skoor skooriTabel;
-	private int[] hetkeTäringud = new int[5];
+	//private int[] hetkeTäringud = new int[5]; Seda paistab, et polegi vaja
 	
 	public Mängija(){
 		this.mängijaNimi="Nimetu";
@@ -16,6 +16,7 @@ public class Mängija {
 		this.mängijaNimi=nimi;
 		this.skooriTabel=new Skoor();
 	}
+
 
 	public Skoor getSkooriTabel() {
 		return skooriTabel;

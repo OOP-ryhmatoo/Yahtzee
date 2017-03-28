@@ -10,18 +10,18 @@ public class Täring {
 	private final String täringuSilmad4 = "\n ------- \n|       |\n|  o o  |\n|       |\n|  o o  |\n|       |\n ------- \t";
 	private final String täringuSilmad5 = "\n ------- \n|       |\n|  o o  |\n|   o   |\n|  o o  |\n|       |\n ------- \t";
 	private final String täringuSilmad6 = "\n ------- \n|       |\n|  o o  |\n|  o o  |\n|  o o  |\n|       |\n ------- \t";
-    
-	
+
+
 	public Täring(){		//Tavalise, 6-tahulise täringu konstruktor
 		this.külgi=6;
 	}
 	public Täring(int n){ 	//N-tahulise täringu konstruktor
 		this.külgi=n;
 	}
-	
+
 	public void veereta(){	//Täringu veeretamine
 		vise= (int)(Math.random()*külgi +1);
-		
+
 		/*if (vise==1){
 			System.out.print(täringuSilmad1);
 		}
@@ -43,8 +43,8 @@ public class Täring {
 	}
 	@Override
 	public String toString() {
-		 if (vise==1){
-			 return täringuSilmad1;
+		if (vise==1){
+			return täringuSilmad1;
 		}
 		if (vise==2){
 			return täringuSilmad2;
@@ -62,5 +62,5 @@ public class Täring {
 			return täringuSilmad6;
 		}
 	}
-	
-	}
+
+}

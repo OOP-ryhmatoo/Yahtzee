@@ -3,13 +3,16 @@
  * 
  */
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class PeaKlass {
 
 	public static void main(String[] args) {
-		
+
 		Yahtzee yatzyMäng = new Yahtzee();
 		// Muutuja kasutaja sisendite jaoks
 		Scanner scKasutajalt =  new Scanner(System.in);
@@ -18,10 +21,14 @@ public class PeaKlass {
 		String kasutajaSisend;
 		boolean mängLõppenud = false;
 		Tops tops = new Tops();
-		
+		// Uuesti on võimalik veeretada täriguid 1,2,3,4,5. 
+		Set<String> valikud = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5"));
+		// Mängija valib täringud, mida uuesti veeretada
+		Set<String> täringuteValik = new HashSet<>();
+
 		System.out.println("Kas soovid mängujuhendit näha? (Y/N)");
 		kasutajaSisend = scKasutajalt.nextLine();
-		
+
 		// Mängujuhendi näitamise valik
 		if (kasutajaSisend.toUpperCase().equals("Y")) {
 			System.out.println("JUHEND");
@@ -38,7 +45,7 @@ public class PeaKlass {
 				System.out.println("Palun sisesta täisarv.");
 			}			
 		}
-		
+
 		// Mängijate lisamine
 		System.out.println("Palun sisesta mängijate nimed.");
 		for (int i = 1; i <= mängijateArv; i++) {
@@ -48,95 +55,69 @@ public class PeaKlass {
 		}
 
 		List<Mängija> mängijad = yatzyMäng.getMängijad();
-		
-		
+
+
 		// Mängutsükkel, iga mängija teeb 12 käiku
 		while (!mängLõppenud) {
-			
+
 			for (Mängija mängija : mängijad) {
-				System.out.println(mängija);
-				
-				// Igal mängijal on võimalik kolm korda täringuid veeretada. 
-<<<<<<< HEAD
-				//for (int j = 1; j <= 3; j++) {
-					System.out.println("Veeretamisvoor. " + 1);
-						tops.viskering();	
-		
-					// Muud Täringute veeretamise valik. Mõte praegu võtta sõne, teha split ja set numbritest 1-5.
-					// Kõiki muid sisendeid võiks ignoreerida.
-					
-					System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)");
-					kasutajaSisend = scKasutajalt.nextLine();
-					String [] valik=kasutajaSisend.split("");
-					
-					if (kasutajaSisend ==""){
-						break;
-					}
-					System.out.println("Veeretamisvoor. " + 2);
-					tops.viskering(valik);
-					
-					System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)");
-					kasutajaSisend = scKasutajalt.nextLine();
-					valik=kasutajaSisend.split("");
-					
-					if (kasutajaSisend ==""){
-						break;
-					}
-					System.out.println("Veeretamisvoor. " + 3);
-					tops.viskering(valik);
-					System.out.println("Voor läbi");
-				//}
-			}
-=======
+				System.out.println(mängija + " kord.");
+
+				// Igal mängijal on võimalik kolm korda täringuid veeretada.
 				for (int j = 1; j < 4; j++) {
-					if (j==1){
+
 					System.out.println("Veeretamisvoor. " + j);
+
+					// Esimeses voorus veeretatakse kõiki täringuid
+					if (j==1) {
 						tops.viskering();
 					}
-					else{
-						
-						// Muud Täringute veeretamise valik. Mõte praegu võtta sõne, teha split ja set numbritest 1-5.
-						// Kõiki muid sisendeid võiks ignoreerida.
-						
+					else {
+
+						// Täringute uuesti veeretamise valik.
+						// Küsib kasutajalt sõne ja lubatud väärtusi otsides moodustab hulga (set) numbritest 1-5.
+						// Tühik lubab mänguringi lõpetada (tsüklist väljuda) 
+
 						System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)"
 								+ "\nKui uuesti veeretada ei taha, vajuta midagi sisestamata Enter.");
+
 						kasutajaSisend = scKasutajalt.nextLine();
-						String [] valik=kasutajaSisend.split("");
-						
+
+						// Kasutaja ei taha veeretada
 						if (kasutajaSisend ==""){
 							break;
 						}
-						System.out.println("Veeretamisvoor. " + 2);
-						tops.viskering(valik);
-						
-						System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)"
-								+ "\nKui uuesti veeretada ei taha, vajuta midagi sisestamata Enter.");
-						kasutajaSisend = scKasutajalt.nextLine();
-						valik=kasutajaSisend.split("");
-						
-						if (kasutajaSisend ==""){
-							break;
+						// kasutaja sisendist otsitakse Stringe 1-5
+						for (String s : valikud) {
+							if (kasutajaSisend.contains(s))
+								täringuteValik.add(s);						
 						}
-						System.out.println("Veeretamisvoor. " + 3);
-						tops.viskering(valik);
-						System.out.println("Voor läbi");
-					}
-				}
-				
-				
+
+						// Topsis olevad täringud
+						tops.viskering(täringuteValik);						
+
+						System.out.println("Voor " + j + " sai läbi");
+
+						// valikud puhtaks
+						täringuteValik.clear();
+					} // else lõpp
+
+				} // for lõpp
+
+
 				//Skoori salvestamine
+				//
 				mängija.salvestaTulemus(tops.getTäringud(), scKasutajalt);
-				
-				
->>>>>>> refs/remotes/origin/master
-			mängLõppenud = true;
-			
+
+
+				mängLõppenud = true;
+
+			}
+
+
+			scKasutajalt.close();
+
 		}
 
-
-		scKasutajalt.close();
-		
 	}
-
-}
 }
