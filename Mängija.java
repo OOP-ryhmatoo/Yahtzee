@@ -47,6 +47,8 @@ public class Mängija {
 		else {
 			skooriTabel.teinePool(tulemus,Integer.parseInt(kasutajaSisend));
 		}
+		System.out.println("Tulemuse peale vooru: ");
+		System.out.println(skooriTabel);
 		
 	}
 	
