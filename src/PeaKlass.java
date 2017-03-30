@@ -1,5 +1,9 @@
 /*
  *  Yahtzee mäng
+ *  Autorid:
+ *  Karl Hannes Veskus
+ *  Mikk Õunmaa
+ *  Raul Lehesalu
  * 
  */
 
@@ -109,8 +113,8 @@ public class PeaKlass {
 				} // for lõpp
 
 
-				//Skoori salvestamine
-				System.out.println("Salvestan tulemuse");
+				// Skoori salvestamine
+				// System.out.println("Salvestan tulemuse");
 				mängija.salvestaTulemus(tops.getTäringud(), scKasutajalt);
 				System.out.println("Näitan tabelit\n" + mängija.getSkooriTabel());
 
@@ -119,6 +123,7 @@ public class PeaKlass {
 
 		}
 		scKasutajalt.close();
+		
 		for (Mängija mängija : mängijad) {
 			System.out.println("Lõpptabel\n" + mängija.getSkooriTabel());
 		}
