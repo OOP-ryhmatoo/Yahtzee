@@ -16,7 +16,7 @@ public class Skoor {
 	}
 
 	public Skoor(){
-		this.skoorid=new int[16];
+		this.skoorid=new int[17];
 	}
 
 
@@ -43,6 +43,9 @@ public class Skoor {
 		if (esimesePooleSumma >= 63){
 			lisaSkoor(7, 50);
 		}
+		
+
+		lisaSkoor(16, lõppTulemus());
 	} // meetodi lõpp
 
 
@@ -142,11 +145,22 @@ public class Skoor {
 		} 
 
 		lisaSkoor(sisend-1, täringuteSumma);
+		
+		
+		lisaSkoor(16, lõppTulemus());
+	}
+
+	private int lõppTulemus() {
+		int summa = 0;
+		for (int i = 0; i < skoorid.length; i++) {
+			summa += skoorid[i];
+		}
+		return summa - skoorid[6];
 	}
 
 	@Override
 	public String toString(){
-		return "1.Ühed: \t" + skoorid[0] +
+		return  "\n1.Ühed: \t" + skoorid[0] +
 				"\n2.Kahed: \t" + skoorid[1]+
 				"\n3.Kolmed: \t" + skoorid[2]+
 				"\n4.Neljad: \t"+skoorid[3]+
@@ -161,11 +175,10 @@ public class Skoor {
 				"\n13.Suur Rida: \t"+skoorid[12]+
 				"\n14.Maja: \t"+skoorid[13]+
 				"\n15.Chance: \t"+skoorid[14] +
-				"\n16.Yahtzee: \t"+skoorid[15];
+				"\n16.Yahtzee: \t"+skoorid[15]+
+				"\nLõpptulemus: \t"+skoorid[16];
 
 	}
-
-
 
 
 }

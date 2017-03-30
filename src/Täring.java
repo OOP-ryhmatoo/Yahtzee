@@ -15,10 +15,6 @@ public class Täring implements Comparable<Täring>{
 	public Täring(){		//Tavalise, 6-tahulise täringu konstruktor
 		this.külgi=6;
 	}
-	// Seda ei peaks vaja minema
-/*	public Täring(int n){ 	//N-tahulise täringu konstruktor
-		this.külgi=n;
-	}*/
 
 	public int getVise() {
 		return vise;
@@ -26,25 +22,6 @@ public class Täring implements Comparable<Täring>{
 
 	public void veereta(){	//Täringu veeretamine
 		vise= (int)(Math.random()*külgi +1);
-
-		/*if (vise==1){
-			System.out.print(täringuSilmad1);
-		}
-		if (vise==2){
-			System.out.print(täringuSilmad2);
-		}
-		if (vise==3){
-			System.out.print(täringuSilmad3);
-		}
-		if (vise==4){
-			System.out.print(täringuSilmad4);
-		}
-		if (vise==5){
-			System.out.print(täringuSilmad5);
-		}
-		if (vise==6){
-			System.out.print(täringuSilmad6);
-		}*/
 	}
 
 	@Override

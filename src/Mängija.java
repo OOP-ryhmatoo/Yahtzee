@@ -41,7 +41,7 @@ public class Mängija {
 		for (Täring t: tulemus){
 			System.out.print(t.toString());
 		}
-		System.out.println("Sinu hetke skoor on: ");
+		// System.out.println("Sinu hetke skoor on: ");
 		System.out.println(skooriTabel);
 		System.out.println("Vali tühi lahter kuhu oma skoor salvestada!(Sisesta soovitud lahtri nr, nt Maja jaoks, sisesta: 12)");
 
@@ -53,6 +53,10 @@ public class Mängija {
 				// vaba lahtri kontroll
 				if (skooriTabel.loeSkoor(lahtriNr) != 0) {
 					System.out.println("See lahter on juba täidetud");
+					continue;
+				}
+				if (lahtriNr < 1 || lahtriNr > 16){
+					System.out.println("See lahter ei sobi");
 					continue;
 				}
 				
