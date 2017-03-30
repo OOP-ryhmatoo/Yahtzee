@@ -55,6 +55,14 @@ public class Mängija {
 					System.out.println("See lahter on juba täidetud");
 					continue;
 				}
+
+				// Sisendi kontrollid
+				if (skooriTabel.loeSkooriKontroll(lahtriNr).equals("*")) {
+					System.out.println("See lahter on juba täidetud");
+					continue;
+				}
+				
+				// Sisendi kontrollid
 				if (lahtriNr < 1 || lahtriNr > 16){
 					System.out.println("See lahter ei sobi");
 					continue;

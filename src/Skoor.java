@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -6,17 +7,25 @@ public class Skoor {
 
 
 	private int[] skoorid;
+	private String[] skoorSisestatud;
 
 	public void lisaSkoor(int lahter, int tulemus) {
 		this.skoorid[lahter] = tulemus;
+		this.skoorSisestatud[lahter] = "*";
 	}
 
 	public int loeSkoor(int lahter) {
 		return this.skoorid[lahter];
 	}
 
+	public String loeSkooriKontroll(int lahter) {
+		return this.skoorSisestatud[lahter];
+	}
+
 	public Skoor(){
 		this.skoorid=new int[17];
+		this.skoorSisestatud = new String[17];
+		Arrays.fill(skoorSisestatud, "");
 	}
 
 
@@ -152,7 +161,7 @@ public class Skoor {
 
 	private int lõppTulemus() {
 		int summa = 0;
-		for (int i = 0; i < skoorid.length; i++) {
+		for (int i = 0; i < skoorid.length - 1; i++) {
 			summa += skoorid[i];
 		}
 		return summa - skoorid[6];
