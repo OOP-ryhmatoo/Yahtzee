@@ -24,7 +24,8 @@ public class Tops {
 	}
 	
 	// Veeretatakse mängija valitud täringuid
-	public void viskering(Set<String> täringuteValik){
+	public List<Täring> viskering(Set<String> täringuteValik){
+		System.out.println("Veeretan uuesti täringuid " + täringuteValik);
 		for (String valitud : täringuteValik){
 			System.out.println("Veeretan uuesti täringut " + Integer.parseInt(valitud));
 			täringud.get(Integer.parseInt(valitud)-1).veereta();
@@ -32,6 +33,7 @@ public class Tops {
 		for (Täring täring : täringud){
 			System.out.println(täring);
 		}
+		return täringud;
 	}
 
 	public List<Täring> getTäringud() {

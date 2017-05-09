@@ -21,8 +21,10 @@ public class GaafilineTäring extends Täring {
 		täringuRuut.setArcHeight(15);
 		täringuRuut.setArcWidth(15);
 		täringuRuut.setStroke(Color.BLACK);
-		täring.getChildren().add(täringuRuut);		
-		
+		täring.getChildren().add(täringuRuut);	
+		if (i==0) {
+			täringuRuut.setStroke(Color.BLUE);
+		}		
 		if (i==1) {
 			täring.getChildren().add(täringuSilm(120,120,20));
 		} 

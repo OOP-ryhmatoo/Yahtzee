@@ -1,35 +1,21 @@
 package application;
 
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 
-public class HoiaNupp {
-	
-	private Button hoiaNupp;
-	private int id;
+public class HoiaNupp  {
 
-	public HoiaNupp(int indeks) {
+	protected Button hoiaNupp;
+
+	public HoiaNupp() {
 		super();
-		this.hoiaNupp = ehitaNupp();
-		this.id = indeks;
+		this.hoiaNupp = new Button();
+		this.hoiaNupp.setText("Hoia");
 	}
 
-	private Button ehitaNupp() {
-		Button b = new Button();
-		b.setText("Hoia");
-		return b;
-	}
-
-	public Node getNupp() {
+	public Button getNupp() {
 		return this.hoiaNupp;
 	}
-	
-	// Selle järgi saab nupu ära tunda, millist täringut hoida
-	public int getNupuId(HoiaNupp nupp) {
-		return this.id;
-		
-	}
-	
-	
+
 
 }
+
