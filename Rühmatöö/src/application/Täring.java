@@ -1,8 +1,5 @@
 package application;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
 public class Täring implements Comparable<Täring>{
 
 	private int külgi;

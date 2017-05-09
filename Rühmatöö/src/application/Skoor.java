@@ -11,6 +11,7 @@ public class Skoor {
 	private String[] skoorSisestatud;
 
 	public void lisaSkoor(int lahter, int tulemus) {
+		System.out.println("lisaSkoor " + lahter + " tulemus " + tulemus);
 		this.skoorid[lahter] = tulemus;
 		this.skoorSisestatud[lahter] = "*";
 	}
@@ -30,18 +31,21 @@ public class Skoor {
 	}
 
 
-	public void esimenePool(List<Täring> tulemus,int sisend){
+	public void esimenePool(List<Täring> tulemus, int sisend){
 
 		System.out.println("Esimene tabelipool " + sisend);
 		int täringuteSumma=0;
 
 		for (Täring täring : tulemus){
+			System.out.println(täring.getVise());
 			if (täring.getVise() == sisend){
 				täringuteSumma += sisend;
 			} //sisemise if lõpp
 		} // for lõpp
+		System.out.println("summa on " + täringuteSumma);
 		lisaSkoor(sisend-1, täringuteSumma);
-
+		
+		
 		// Praegu arvutab iga kord poolsumma ja boonuse. Tulevikus peaks midagi optimaalsemat välja mõtlema
 		// Boonuse arvutamine
 		int esimesePooleSumma = 0;
@@ -183,22 +187,22 @@ public class Skoor {
 
 	@Override
 	public String toString(){
-		return  "\n1.Ühed: \t" + skoorid[0] +
-				"\n2.Kahed: \t" + skoorid[1]+
-				"\n3.Kolmed: \t" + skoorid[2]+
-				"\n4.Neljad: \t"+skoorid[3]+
-				"\n5.Viied: \t"+skoorid[4]+
-				"\n6.Kuued: \t"+skoorid[5]+
+		return  "\n1. Ühed: \t" + skoorid[0] +
+				"\n2. Kahed: \t" + skoorid[1]+
+				"\n3. Kolmed: \t" + skoorid[2]+
+				"\n4. Neljad: \t"+skoorid[3]+
+				"\n5. Viied: \t"+skoorid[4]+
+				"\n6. Kuued: \t"+skoorid[5]+
 				"\nPoolsumma: \t"+skoorid[6]+
 				"\nBoonus: \t"+skoorid[7]+
-				"\n9.Üks Paar: \t"+skoorid[8]+
-				"\n10.Kaks Paari: \t"+skoorid[9]+
-				"\n11.Kolmikr: \t"+skoorid[10]+
-				"\n12.Väike Rida: \t"+skoorid[11]+
-				"\n13.Suur Rida: \t"+skoorid[12]+
-				"\n14.Maja: \t"+skoorid[13]+
-				"\n15.Chance: \t"+skoorid[14] +
-				"\n16.Yahtzee: \t"+skoorid[15]+
+				"\n9. Üks Paar: \t"+skoorid[8]+
+				"\n10. Kaks Paari: \t"+skoorid[9]+
+				"\n11. Kolmikr: \t"+skoorid[10]+
+				"\n12. Väike Rida: \t"+skoorid[11]+
+				"\n13. Suur Rida: \t"+skoorid[12]+
+				"\n14. Maja: \t"+skoorid[13]+
+				"\n15. Chance: \t"+skoorid[14] +
+				"\n16. Yahtzee: \t"+skoorid[15]+
 				"\nLõpptulemus: \t"+skoorid[16];
 
 	}

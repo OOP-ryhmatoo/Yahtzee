@@ -25,6 +25,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -52,7 +53,7 @@ public class PeaKlass extends Application {
 	protected String veeretamisVoor = "";
 	protected String mänguRing = "";
 	protected Mängija mängija;
-	
+
 	@Override
 	public void start(Stage peaLava) {
 
@@ -68,16 +69,14 @@ public class PeaKlass extends Application {
 		// Uuesti on võimalik veeretada täriguid 1,2,3,4,5. 
 		Set<String> valikud = new HashSet<>(Arrays.asList("1", "2", "3", "4", "5"));
 		// Mängija valib täringud, mida uuesti veeretada
-		Set<String> täringuteValik = new HashSet<>();
-		
+		Set<String> täringuteValik = new HashSet<>(Arrays.asList("1", "2", "3", "4", "5"));
+
 		// veeretamisevoorude arvepidaja
-		Queue<String> veeretamisVoorud = new LinkedList<>();
-		// Mängija üks voor, kolm korda saab veeretada		
-		veeretamisVoorud.add("1. veeretamine");
-		veeretamisVoorud.add("2. veeretamine");
-		veeretamisVoorud.add("3. veeretamine");
-		veeretamisVoorud.add("");
-		// Mänguvoorude arvepidaja
+		// Mängija saab ühes voorus kolm korda veeretada	
+		Queue<String> veeretamisVoorud = new LinkedList<>(Arrays.asList("1. veeretamine", 
+				"2. veeretamine", "3. veeretamine", ""));
+		
+		// Mänguvoorude arvepidaja TODO kui testimisest küllalt saab, lisa kõik voorud
 		Queue<String> mänguRingid = new LinkedList<>();
 		mänguRingid.add("1. mänguring");
 		mänguRingid.add("2. mänguring");
@@ -85,7 +84,11 @@ public class PeaKlass extends Application {
 		mänguRingid.add("4. mänguring");
 		mänguRingid.add("");
 
+
+		// Testmangija
 		yatzyMäng.lisaMängija(new Mängija("Testmängija"));
+		mängija = yatzyMäng.getMängijad().get(0);
+		
 		
 		// Graafika
 
@@ -97,39 +100,40 @@ public class PeaKlass extends Application {
 		vBox.setSpacing(20);
 		juur.getChildren().add(vBox);
 		Scene stseen = new Scene(juur, laius, kõrgus, Color.SNOW);
-		
+
 		// Miski enam-vähem talutava skaleerumise peab välja mõtlema
 		stseen.widthProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-		        System.out.println("Width: " + newSceneWidth);
-		    }
+			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+				System.out.println("Width: " + newSceneWidth);
+			}
 		});
 		stseen.heightProperty().addListener(new ChangeListener<Number>() {
-		    @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-		        System.out.println("Height: " + newSceneHeight);
-		    }
+			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+				System.out.println("Height: " + newSceneHeight);
+			}
 		});
 
-		
-		
+
+
 		// Mängujuhendi nupp
 		Button abiNupp = new Button();
 		abiNupp.setText("Mängujuhend");
 		vBox.getChildren().add(abiNupp);
 
-		
+
 		// Mängujuhendi näitamise käsitleja
 		abiNupp.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent me) {
+				
 				peaLava.hide();
 				Stage juhendiLava = new Stage();
-				VBox vBox = new VBox(10);
+				VBox vBox = new VBox(10);				
 				TextArea juhend = new TextArea();
 				juhend.setEditable(false);
 				vBox.getChildren().add(juhend);
 				juhend.setText(yatzyMäng.näitaJuhendit());
-				
+
 				Button sulgeNupp = new Button("Sulge");
 				vBox.getChildren().add(sulgeNupp);
 
@@ -141,11 +145,11 @@ public class PeaKlass extends Application {
 						juhendiLava.hide();
 					}
 				});
-				
+
 				Scene stseen2 = new Scene(vBox);
 				juhendiLava.setScene(stseen2);
 				juhendiLava.show();
-				
+
 				// Kui nurgast kinni panna, siis läheb mängu juurde tagasi
 				juhendiLava.setOnHiding(new EventHandler<WindowEvent>() {
 					@Override
@@ -164,11 +168,14 @@ public class PeaKlass extends Application {
 		infoAla.setEditable(false);		
 		vBox.getChildren().add(infoAla);
 
-		// täringud
+		// täringud ja hoidmise nupud gridpane sees
 		GridPane täringuteAla = new GridPane();
+		täringuteAla.setHgap(10);
+		täringuteAla.setVgap(10);
+		täringuteAla.setPadding(new Insets(10, 10, 10, 10)); 
 		vBox.getChildren().add(täringuteAla);
 
-		//Algne täringute näitamine
+		// Algne täringute näitamine
 		täringud = tops.viskering();
 		täringud.forEach(t -> System.out.println(t.getVise()));
 		Node täring1 = new GaafilineTäring(täringud.get(0).getVise()).getTäring();
@@ -184,7 +191,6 @@ public class PeaKlass extends Application {
 
 
 		// Täringute hoidmise nupud
-		// TODO käsitlejad lisamiseks/ eemaldamiseks täringuteValik.add(s); 	täringuteValik.remove(s)
 		Button hoiaNupp1 = new HoiaNupp().getNupp();
 		Button hoiaNupp2 = new HoiaNupp().getNupp();
 		Button hoiaNupp3 = new HoiaNupp().getNupp();
@@ -194,94 +200,105 @@ public class PeaKlass extends Application {
 		Button[] hoiaNupud = {hoiaNupp1, hoiaNupp2, hoiaNupp3, hoiaNupp4, hoiaNupp5};
 
 		for (int i = 0; i < hoiaNupud.length; i++) {	
-			
+
 			Button h = hoiaNupud[i];
 			// Hoidmise nupu ID
 			h.setId(String.valueOf(i+1));
 			täringuteAla.add(h, i, 1);
 			GridPane.setHalignment(h, HPos.CENTER);
-			
+
 			// Hoianupu hiirekäsitleja
 			h.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
 					//System.out.println(event.getTarget());
 					//System.out.println(event.getSource());
-					if (h.getText().equals("Hoia")) {
-						h.setStyle("-fx-base: green;");
+					if (h.getText().toLowerCase().equals("hoia")) {
+						h.setStyle("-fx-base: green; -fx-font: 24 arial;");
 						h.setText("Veereta");
-						täringuteValik.add(h.getId());
-						System.out.println("Lisan täringutevalikusse " + h.getId());
-					} else {
-						h.setStyle("-fx-base: grey;");
-						h.setText("Hoia");		
 						täringuteValik.remove(h.getId());
-						System.out.println("eemaldan täringutevalikust " + h.getId());
+						System.out.println("Lisan täringutevalikusse " + h.getId());
+					} else if (h.getText().toLowerCase().equals("veereta")){
+						h.setStyle("-fx-base: lightgrey; -fx-font: 24 arial;");
+						h.setText("Hoia");
+						täringuteValik.add(h.getId());	
+						System.out.println("Eemaldan täringutevalikust " + h.getId());
 					}
 				}
 			});			
 		}
-		
-		
+
+
 		// Veeretamise nupp		
 		Button veeretaNupp = new Button();
 		veeretaNupp.setText("Veereta");
 		vBox.getChildren().add(veeretaNupp);
-		
+
 		veeretaNupp.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    @Override
+			@Override
 			public void handle(MouseEvent me) {
-		        System.out.println("veeretaNupu handler");
-		        System.out.println("Täringutevalik" + täringuteValik);
-		        
-		        veeretamisVoor = veeretamisVoorud.poll();
-		        infoAla.setText(mänguRing + "\n" + veeretamisVoor);
-				System.out.println("mänguRing" + mänguRing);
-				System.out.println("veeretamisVoor" + veeretamisVoor);
-		        täringud = tops.viskering(täringuteValik);	
-		        täringuteAla.add(new GaafilineTäring(täringud.get(0).getVise()).getTäring(), 0, 0);
+
+				System.out.println("Täringutevalik" + täringuteValik);
+
+				veeretamisVoor = veeretamisVoorud.poll();
+				infoAla.setText(mänguRing + "\n" + veeretamisVoor);
+				System.out.println("mänguRing " + mänguRing);
+				System.out.println("veeretamisVoor " + veeretamisVoor);
+				
+				täringud = tops.viskering(täringuteValik);	
+				täringuteAla.add(new GaafilineTäring(täringud.get(0).getVise()).getTäring(), 0, 0);
 				täringuteAla.add(new GaafilineTäring(täringud.get(1).getVise()).getTäring(), 1, 0);
 				täringuteAla.add(new GaafilineTäring(täringud.get(2).getVise()).getTäring(), 2, 0);
 				täringuteAla.add(new GaafilineTäring(täringud.get(3).getVise()).getTäring(), 3, 0);
 				täringuteAla.add(new GaafilineTäring(täringud.get(4).getVise()).getTäring(), 4, 0);
-				
-				
+
+				// Kolmanda veeretamise järel läheb käiku
 				if (veeretamisVoorud.isEmpty()) {
-					System.out.println("Uus mänguring");
+					
+					// vooru tulemuse salvestamine
+					peaLava.hide();
+					mängija.salvestaGraafilineTulemus(tops.getTäringud());
+					peaLava.show();
+
 					mänguRing = mänguRingid.poll();
 					veeretamisVoorud.add("1. veeretamine");
 					veeretamisVoorud.add("2. veeretamine");
 					veeretamisVoorud.add("3. veeretamine");
 					veeretamisVoorud.add("");
-			        veeretamisVoor = veeretamisVoorud.poll();
-					System.out.println("mänguRing" + mänguRing);
-			        infoAla.setText(mänguRing + "\n" + veeretamisVoor);
-			        // TODO tulemuse salvestamine skooritabelisse
+					veeretamisVoor = veeretamisVoorud.poll();
+					System.out.println("Uus mänguRing nr. " + mänguRing);
+					infoAla.setText(mänguRing + "\n" + veeretamisVoor);
 				}
-				
-				// Mänguringid otsas
+
+				// Mängu lõpp
 				if (mänguRingid.isEmpty()) {
 					peaLava.hide();
 					Stage mänguLõpp = new Stage();
-					VBox vBox2 = new VBox(10);
+					VBox vBox2 = new VBox(30);
 					TextArea lõpuInfo = new TextArea();
 					vBox2.getChildren().add(lõpuInfo);
+					lõpuInfo.setPrefHeight(500);
 					lõpuInfo.setEditable(false);
-					lõpuInfo.setText("Mäng läbi\n");
-					//lõpuInfo.setText("Mäng läbi\n" + mängija.getSkooriTabel());
-					
-					// TODO faili salvestamine
+
+					lõpuInfo.setText("Mäng läbi\n" + mängija.getSkooriTabel());
+
 					Button salvestaNupp = new Button("Salvesta skoor");
 					vBox2.getChildren().add(salvestaNupp);
-					Scene stseen3 = new Scene(vBox2);
+
+					// TODO faili salvestamine
+					salvestaNupp.setOnMouseClicked(e->{
+						mängija.salvestaSkoorFaili();
+			        });
+
+					Scene stseen3 = new Scene(vBox2, 400, 650);
 					mänguLõpp.setScene(stseen3);
 					mänguLõpp.show();
 				}		    
-		    }
+			}
 		});
-		
-		
-		
+
+
+		// Seda kas üldse ongi vaja?
 		// Kasutaja sisendi ala. Siia siis keyboardi evendid 
 		// Nime sisestamine, mis skooritabeli reale tulemus salvestada
 		TextArea sisendiAla = new TextArea();
@@ -290,17 +307,17 @@ public class PeaKlass extends Application {
 
 		// Esimese vooru info näitamine
 		mänguRing = mänguRingid.poll();
-        veeretamisVoor = veeretamisVoorud.poll();
-        infoAla.setText("Mängu algus\n" + mänguRing + "\n" + veeretamisVoor);
+		veeretamisVoor = veeretamisVoorud.poll();
+		infoAla.setText("Mängu algus\n" + mänguRing + "\n" + veeretamisVoor);
 
 		peaLava.setTitle("Yahtzee JavaFX");       
 		peaLava.setScene(stseen);
 		peaLava.show();
 
-		
-		
-		
-		
+
+
+
+
 		/*
 		// Mängijate lisamine
 		System.out.println("Palun sisesta mängijate nimed.");

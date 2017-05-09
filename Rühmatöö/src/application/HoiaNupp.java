@@ -10,6 +10,7 @@ public class HoiaNupp  {
 		super();
 		this.hoiaNupp = new Button();
 		this.hoiaNupp.setText("Hoia");
+		this.hoiaNupp.setStyle("-fx-base: lightgrey; -fx-font: 24 arial;");
 	}
 
 	public Button getNupp() {
