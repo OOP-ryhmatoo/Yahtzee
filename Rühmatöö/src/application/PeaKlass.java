@@ -90,28 +90,20 @@ public class PeaKlass extends Application {
 		mängija = yatzyMäng.getMängijad().get(0);
 		
 		
+
 		// Graafika
 
-		double kõrgus = 900;
-		double laius = 1200;
+		double kõrgus = Screen.getPrimary().getVisualBounds().getHeight()-50; // Aken kasutaja monitori suurusega
+		double laius = Screen.getPrimary().getVisualBounds().getWidth()-50;
+		peaLava.setResizable(false);
 
 		Group juur = new Group();
 		VBox vBox = new VBox();
 		vBox.setSpacing(20);
 		juur.getChildren().add(vBox);
 		Scene stseen = new Scene(juur, laius, kõrgus, Color.SNOW);
+		
 
-		// Miski enam-vähem talutava skaleerumise peab välja mõtlema
-		stseen.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-				System.out.println("Width: " + newSceneWidth);
-			}
-		});
-		stseen.heightProperty().addListener(new ChangeListener<Number>() {
-			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-				System.out.println("Height: " + newSceneHeight);
-			}
-		});
 
 
 
