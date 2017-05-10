@@ -8,41 +8,30 @@ n *  Yahtzee mäng
  */
 package application;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.Queue;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -55,7 +44,7 @@ public class PeaKlass extends Application {
 	protected Mängija mängija;
 
 	@Override
-	public void start(Stage peaLava) {
+	public void start(Stage peaLava) throws IOException{
 
 		// Esimsesest rühmatööst - nii palju kui võimalik kasutada.
 		Yahtzee yatzyMäng = new Yahtzee();
@@ -90,7 +79,6 @@ public class PeaKlass extends Application {
 		mängija = yatzyMäng.getMängijad().get(0);
 		
 		
-
 		// Graafika
 
 		double kõrgus = Screen.getPrimary().getVisualBounds().getHeight()-50; // Aken kasutaja monitori suurusega
@@ -103,6 +91,7 @@ public class PeaKlass extends Application {
 		juur.getChildren().add(vBox);
 		Scene stseen = new Scene(juur, laius, kõrgus, Color.SNOW);
 		
+
 
 
 
@@ -277,9 +266,13 @@ public class PeaKlass extends Application {
 					Button salvestaNupp = new Button("Salvesta skoor");
 					vBox2.getChildren().add(salvestaNupp);
 
-					// TODO faili salvestamine
+
 					salvestaNupp.setOnMouseClicked(e->{
-						mängija.salvestaSkoorFaili();
+						try {
+							mängija.salvestaSkoorFaili("YahtzeeSkoor.txt");
+						} catch (IOException e1) {
+							System.out.println("Skoor ei salvestunud.");
+						}
 			        });
 
 					Scene stseen3 = new Scene(vBox2, 400, 650);
@@ -387,6 +380,10 @@ public class PeaKlass extends Application {
 		for (Mängija mängija : mängijad) {
 			System.out.println("Lõpptabel\n" + mängija.getSkooriTabel());
 		}*/
+		
+		
+		
+		
 	}
 	public static void main(String[] args) {
 		launch(args);
