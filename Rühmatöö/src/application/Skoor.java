@@ -1,4 +1,6 @@
 package application;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -184,26 +186,33 @@ public class Skoor {
 		}
 		return summa - skoorid[6];
 	}
+	
+	public void salvestaFaili(String failinimi) throws IOException{
+		try(FileWriter fw=new FileWriter(failinimi)){
+			fw.write(this.toString());
+			fw.flush();
+		}
+	}
 
 	@Override
 	public String toString(){
-		return  "\n1. Ühed: \t" + skoorid[0] +
-				"\n2. Kahed: \t" + skoorid[1]+
-				"\n3. Kolmed: \t" + skoorid[2]+
-				"\n4. Neljad: \t"+skoorid[3]+
-				"\n5. Viied: \t"+skoorid[4]+
-				"\n6. Kuued: \t"+skoorid[5]+
-				"\nPoolsumma: \t"+skoorid[6]+
-				"\nBoonus: \t"+skoorid[7]+
-				"\n9. Üks Paar: \t"+skoorid[8]+
-				"\n10. Kaks Paari: \t"+skoorid[9]+
-				"\n11. Kolmikr: \t"+skoorid[10]+
-				"\n12. Väike Rida: \t"+skoorid[11]+
-				"\n13. Suur Rida: \t"+skoorid[12]+
-				"\n14. Maja: \t"+skoorid[13]+
-				"\n15. Chance: \t"+skoorid[14] +
-				"\n16. Yahtzee: \t"+skoorid[15]+
-				"\nLõpptulemus: \t"+skoorid[16];
+		return  System.lineSeparator()+"1. Ühed: \t" + skoorid[0] +
+				System.lineSeparator()+"2. Kahed: \t" + skoorid[1]+
+				System.lineSeparator()+"3. Kolmed: \t" + skoorid[2]+
+				System.lineSeparator()+"4. Neljad: \t"+skoorid[3]+
+				System.lineSeparator()+"5. Viied: \t"+skoorid[4]+
+				System.lineSeparator()+"6. Kuued: \t"+skoorid[5]+
+				System.lineSeparator()+"Poolsumma: \t"+skoorid[6]+
+				System.lineSeparator()+"Boonus: \t"+skoorid[7]+
+				System.lineSeparator()+"9. Üks Paar: \t"+skoorid[8]+
+				System.lineSeparator()+"10. Kaks Paari:\t"+skoorid[9]+
+				System.lineSeparator()+"11. Kolmik: \t"+skoorid[10]+
+				System.lineSeparator()+"12. Väike Rida:\t"+skoorid[11]+
+				System.lineSeparator()+"13. Suur Rida: \t"+skoorid[12]+
+				System.lineSeparator()+"14. Maja: \t"+skoorid[13]+
+				System.lineSeparator()+"15. Chance: \t"+skoorid[14] +
+				System.lineSeparator()+"16. Yahtzee: \t"+skoorid[15]+
+				System.lineSeparator()+"Lõpptulemus: \t"+skoorid[16];
 
 	}
 
