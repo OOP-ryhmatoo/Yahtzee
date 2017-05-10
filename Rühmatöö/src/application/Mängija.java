@@ -1,4 +1,5 @@
 package application;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -202,9 +203,8 @@ public class Mängija {
 
 	}
 
-	public void salvestaSkoorFaili() {
-		// TODO Auto-generated method stub
-        System.out.println("Siia tuleb viide mängija klassi meetodile, mis tulemuse faili väljastab");
+	public void salvestaSkoorFaili(String failinimi) throws IOException {
+		this.skooriTabel.salvestaFaili(failinimi);
 	}
 
 }
