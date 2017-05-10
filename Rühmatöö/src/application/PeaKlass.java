@@ -8,43 +8,34 @@ n *  Yahtzee mäng
  */
 package application;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.Queue;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class PeaKlass extends Application {
 
@@ -55,7 +46,7 @@ public class PeaKlass extends Application {
 	protected Mängija mängija;
 
 	@Override
-	public void start(Stage peaLava) {
+	public void start(Stage peaLava) throws IOException{
 
 		// Esimsesest rühmatööst - nii palju kui võimalik kasutada.
 		Yahtzee yatzyMäng = new Yahtzee();
@@ -92,26 +83,20 @@ public class PeaKlass extends Application {
 		
 		// Graafika
 
-		double kõrgus = 900;
-		double laius = 1200;
+		double kõrgus = Screen.getPrimary().getVisualBounds().getHeight()-50; // Aken kasutaja monitori suurusega
+		double laius = kõrgus*1.5;
+		
+		
+		
 
 		Group juur = new Group();
 		VBox vBox = new VBox();
 		vBox.setSpacing(20);
 		juur.getChildren().add(vBox);
 		Scene stseen = new Scene(juur, laius, kõrgus, Color.SNOW);
-
-		// Miski enam-vähem talutava skaleerumise peab välja mõtlema
-		stseen.widthProperty().addListener(new ChangeListener<Number>() {
-			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-				System.out.println("Width: " + newSceneWidth);
-			}
-		});
-		stseen.heightProperty().addListener(new ChangeListener<Number>() {
-			@Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-				System.out.println("Height: " + newSceneHeight);
-			}
-		});
+	
+		
+		
 
 
 
@@ -164,8 +149,10 @@ public class PeaKlass extends Application {
 
 		// Infoala  mängijale tagasiside andmiseks
 		TextArea infoAla = new TextArea();
-		infoAla.setPrefSize(laius - 1, kõrgus/3);
-		infoAla.setEditable(false);		
+		infoAla.setPrefSize(laius - 1, kõrgus/6);
+		infoAla.setEditable(false);
+		infoAla.prefHeightProperty().bind(stseen.heightProperty().divide(6));
+		infoAla.prefWidthProperty().bind(stseen.widthProperty().multiply(0.99));
 		vBox.getChildren().add(infoAla);
 
 		// täringud ja hoidmise nupud gridpane sees
@@ -173,16 +160,18 @@ public class PeaKlass extends Application {
 		täringuteAla.setHgap(10);
 		täringuteAla.setVgap(10);
 		täringuteAla.setPadding(new Insets(10, 10, 10, 10)); 
+		täringuteAla.prefHeightProperty().bind(stseen.heightProperty().divide(2));
+		täringuteAla.prefWidthProperty().bind(stseen.widthProperty().multiply(0.99));
 		vBox.getChildren().add(täringuteAla);
 
 		// Algne täringute näitamine
 		täringud = tops.viskering();
 		täringud.forEach(t -> System.out.println(t.getVise()));
-		Node täring1 = new GaafilineTäring(täringud.get(0).getVise()).getTäring();
-		Node täring2 = new GaafilineTäring(täringud.get(1).getVise()).getTäring();
-		Node täring3 = new GaafilineTäring(täringud.get(2).getVise()).getTäring();
-		Node täring4 = new GaafilineTäring(täringud.get(3).getVise()).getTäring();
-		Node täring5 = new GaafilineTäring(täringud.get(4).getVise()).getTäring();
+		Node täring1 = new GraafilineTäring(täringud.get(0).getVise()).getTäring();
+		Node täring2 = new GraafilineTäring(täringud.get(1).getVise()).getTäring();
+		Node täring3 = new GraafilineTäring(täringud.get(2).getVise()).getTäring();
+		Node täring4 = new GraafilineTäring(täringud.get(3).getVise()).getTäring();
+		Node täring5 = new GraafilineTäring(täringud.get(4).getVise()).getTäring();
 		täringuteAla.add(täring1, 0, 0);
 		täringuteAla.add(täring2, 1, 0);
 		täringuteAla.add(täring3, 2, 0);
@@ -246,11 +235,11 @@ public class PeaKlass extends Application {
 				System.out.println("veeretamisVoor " + veeretamisVoor);
 				
 				täringud = tops.viskering(täringuteValik);	
-				täringuteAla.add(new GaafilineTäring(täringud.get(0).getVise()).getTäring(), 0, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(1).getVise()).getTäring(), 1, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(2).getVise()).getTäring(), 2, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(3).getVise()).getTäring(), 3, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(4).getVise()).getTäring(), 4, 0);
+				täringuteAla.add(new GraafilineTäring(täringud.get(0).getVise()).getTäring(), 0, 0);
+				täringuteAla.add(new GraafilineTäring(täringud.get(1).getVise()).getTäring(), 1, 0);
+				täringuteAla.add(new GraafilineTäring(täringud.get(2).getVise()).getTäring(), 2, 0);
+				täringuteAla.add(new GraafilineTäring(täringud.get(3).getVise()).getTäring(), 3, 0);
+				täringuteAla.add(new GraafilineTäring(täringud.get(4).getVise()).getTäring(), 4, 0);
 
 				// Kolmanda veeretamise järel läheb käiku
 				if (veeretamisVoorud.isEmpty()) {
@@ -285,9 +274,13 @@ public class PeaKlass extends Application {
 					Button salvestaNupp = new Button("Salvesta skoor");
 					vBox2.getChildren().add(salvestaNupp);
 
-					// TODO faili salvestamine
+
 					salvestaNupp.setOnMouseClicked(e->{
-						mängija.salvestaSkoorFaili();
+						try {
+							mängija.salvestaSkoorFaili("YahtzeeSkoor.txt");
+						} catch (IOException e1) {
+							System.out.println("Skoor ei salvestunud.");
+						}
 			        });
 
 					Scene stseen3 = new Scene(vBox2, 400, 650);
@@ -312,6 +305,10 @@ public class PeaKlass extends Application {
 
 		peaLava.setTitle("Yahtzee JavaFX");       
 		peaLava.setScene(stseen);
+		
+	    peaLava.minWidthProperty().bind(stseen.heightProperty().multiply(1.5));
+	    peaLava.minHeightProperty().bind(stseen.widthProperty().divide(2));
+		
 		peaLava.show();
 
 
@@ -395,6 +392,10 @@ public class PeaKlass extends Application {
 		for (Mängija mängija : mängijad) {
 			System.out.println("Lõpptabel\n" + mängija.getSkooriTabel());
 		}*/
+		
+		
+		
+		
 	}
 	public static void main(String[] args) {
 		launch(args);
