@@ -156,7 +156,7 @@ public class Mängija {
 					int lahtriNr = Integer.parseInt(kasutajaSisend.getText().trim());
 
 					// Sisendi kontrollid
-					if (lahtriNr < 1 || lahtriNr > 16){
+					if (lahtriNr < 1 || lahtriNr > 16 || lahtriNr == 7 || lahtriNr == 8){
 						juhendid.clear();
 						juhendid.setText("See lahter ei sobi\n");
 						juhendid.appendText(sisestusInfo);

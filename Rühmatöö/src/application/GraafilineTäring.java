@@ -5,11 +5,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-public class GaafilineTäring extends Täring {
-		
+public class GraafilineTäring extends Täring {
+
 	private Pane täring;
 	
-	public GaafilineTäring(int i) {
+	public GraafilineTäring(int i) {
 		super();
 		this.täring = ehitaTäring(i);
 	}
@@ -17,7 +17,8 @@ public class GaafilineTäring extends Täring {
 	private Pane ehitaTäring(int i) {
 		
 		Pane täring = new Pane();
-		Rectangle täringuRuut = new Rectangle(20,20,200,200);	    
+		Rectangle täringuRuut = new Rectangle(20, 20, 200, 200);
+		
 		täringuRuut.setArcHeight(15);
 		täringuRuut.setArcWidth(15);
 		täringuRuut.setStroke(Color.BLACK);
@@ -61,8 +62,11 @@ public class GaafilineTäring extends Täring {
 		return täring;
 	}
 	
-	private Circle täringuSilm(double r, double x, double y) {
-		Circle täringuSilm = new Circle(r, x, y);
+	
+	
+	
+	private Circle täringuSilm(double x, double y, double r) {
+		Circle täringuSilm = new Circle(x, y, r);
 		täringuSilm.setFill(Color.WHITE);
 		return täringuSilm;		
 	}

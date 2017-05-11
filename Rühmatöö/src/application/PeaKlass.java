@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Queue;
 
@@ -22,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -29,9 +29,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -49,14 +49,7 @@ public class PeaKlass extends Application {
 		// Esimsesest rühmatööst - nii palju kui võimalik kasutada.
 		Yahtzee yatzyMäng = new Yahtzee();
 		Tops tops = new Tops();
-		// Muutuja kasutaja sisendite jaoks
-		Scanner scKasutajalt =  new Scanner(System.in);
-		String kasutajaSisend;
-		// Praegu toetab ühte mängijat. Rühmatöö teises pooles võiks lisada mitme mängija toe
-		int mängijateArv = 1;
 
-		// Uuesti on võimalik veeretada täriguid 1,2,3,4,5. 
-		Set<String> valikud = new HashSet<>(Arrays.asList("1", "2", "3", "4", "5"));
 		// Mängija valib täringud, mida uuesti veeretada
 		Set<String> täringuteValik = new HashSet<>(Arrays.asList("1", "2", "3", "4", "5"));
 
@@ -67,10 +60,8 @@ public class PeaKlass extends Application {
 		
 		// Mänguvoorude arvepidaja TODO kui testimisest küllalt saab, lisa kõik voorud
 		Queue<String> mänguRingid = new LinkedList<>();
-		mänguRingid.add("1. mänguring");
-		mänguRingid.add("2. mänguring");
-		mänguRingid.add("3. mänguring");
-		mänguRingid.add("4. mänguring");
+		for (int i = 1; i < 14; i++)
+			mänguRingid.add( String.valueOf(i) + ". mänguring");
 		mänguRingid.add("");
 
 
@@ -81,26 +72,22 @@ public class PeaKlass extends Application {
 		
 		// Graafika
 
-		double kõrgus = Screen.getPrimary().getVisualBounds().getHeight()-50; // Aken kasutaja monitori suurusega
-		double laius = Screen.getPrimary().getVisualBounds().getWidth()-50;
-		peaLava.setResizable(false);
+		double kõrgus = 900;
+		double laius = 1300;
 
 		Group juur = new Group();
 		VBox vBox = new VBox();
 		vBox.setSpacing(20);
 		juur.getChildren().add(vBox);
-		Scene stseen = new Scene(juur, laius, kõrgus, Color.SNOW);
-		
-
-
-
+		Scene stseen = new Scene(juur, laius, kõrgus, Color.SNOW);	
+		vBox.prefWidthProperty().bind(stseen.widthProperty());
 
 
 		// Mängujuhendi nupp
 		Button abiNupp = new Button();
 		abiNupp.setText("Mängujuhend");
 		vBox.getChildren().add(abiNupp);
-
+		vBox.setAlignment(Pos.TOP_RIGHT);
 
 		// Mängujuhendi näitamise käsitleja
 		abiNupp.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -112,12 +99,17 @@ public class PeaKlass extends Application {
 				VBox vBox = new VBox(10);				
 				TextArea juhend = new TextArea();
 				juhend.setEditable(false);
+				juhend.setWrapText(true);
+				juhend.setPrefHeight(700);
 				vBox.getChildren().add(juhend);
 				juhend.setText(yatzyMäng.näitaJuhendit());
 
 				Button sulgeNupp = new Button("Sulge");
 				vBox.getChildren().add(sulgeNupp);
-
+				vBox.setAlignment(Pos.CENTER);
+				sulgeNupp.prefHeightProperty().bind(vBox.heightProperty().divide(10.0));
+				sulgeNupp.prefWidthProperty().bind(vBox.widthProperty().divide(5.0));
+				
 				// Juhendi sulgemise järel läheb tagasi pealavale
 				sulgeNupp.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -139,8 +131,7 @@ public class PeaKlass extends Application {
 					}					
 				});	
 			}			
-		});	
-
+		});
 
 
 		// Infoala  mängijale tagasiside andmiseks
@@ -148,7 +139,9 @@ public class PeaKlass extends Application {
 		infoAla.setPrefSize(laius - 1, kõrgus/3);
 		infoAla.setEditable(false);		
 		vBox.getChildren().add(infoAla);
-
+		infoAla.prefHeightProperty().bind(stseen.heightProperty().divide(3.0));
+		infoAla.prefWidthProperty().bind(stseen.widthProperty());
+		
 		// täringud ja hoidmise nupud gridpane sees
 		GridPane täringuteAla = new GridPane();
 		täringuteAla.setHgap(10);
@@ -156,14 +149,17 @@ public class PeaKlass extends Application {
 		täringuteAla.setPadding(new Insets(10, 10, 10, 10)); 
 		vBox.getChildren().add(täringuteAla);
 
+		täringuteAla.prefWidthProperty().bind(stseen.widthProperty());
+		täringuteAla.prefHeightProperty().bind(stseen.heightProperty().divide(2.5));
+
 		// Algne täringute näitamine
 		täringud = tops.viskering();
 		täringud.forEach(t -> System.out.println(t.getVise()));
-		Node täring1 = new GaafilineTäring(täringud.get(0).getVise()).getTäring();
-		Node täring2 = new GaafilineTäring(täringud.get(1).getVise()).getTäring();
-		Node täring3 = new GaafilineTäring(täringud.get(2).getVise()).getTäring();
-		Node täring4 = new GaafilineTäring(täringud.get(3).getVise()).getTäring();
-		Node täring5 = new GaafilineTäring(täringud.get(4).getVise()).getTäring();
+		Pane täring1 = new GraafilineTäring(täringud.get(0).getVise()).getTäring();
+		Pane täring2 = new GraafilineTäring(täringud.get(1).getVise()).getTäring();
+		Pane täring3 = new GraafilineTäring(täringud.get(2).getVise()).getTäring();
+		Pane täring4 = new GraafilineTäring(täringud.get(3).getVise()).getTäring();
+		Pane täring5 = new GraafilineTäring(täringud.get(4).getVise()).getTäring();
 		täringuteAla.add(täring1, 0, 0);
 		täringuteAla.add(täring2, 1, 0);
 		täringuteAla.add(täring3, 2, 0);
@@ -192,8 +188,6 @@ public class PeaKlass extends Application {
 			h.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					//System.out.println(event.getTarget());
-					//System.out.println(event.getSource());
 					if (h.getText().toLowerCase().equals("hoia")) {
 						h.setStyle("-fx-base: green; -fx-font: 24 arial;");
 						h.setText("Veereta");
@@ -213,8 +207,12 @@ public class PeaKlass extends Application {
 		// Veeretamise nupp		
 		Button veeretaNupp = new Button();
 		veeretaNupp.setText("Veereta");
+		veeretaNupp.setStyle("-fx-base: darkgreen; -fx-font: 24 arial;");
 		vBox.getChildren().add(veeretaNupp);
-
+		vBox.setAlignment(Pos.BOTTOM_CENTER);
+/*		veeretaNupp.prefHeightProperty().bind(vBox.heightProperty().divide(10));
+		veeretaNupp.prefWidthProperty().bind(vBox.widthProperty().divide(7));*/
+		
 		veeretaNupp.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent me) {
@@ -226,12 +224,17 @@ public class PeaKlass extends Application {
 				System.out.println("mänguRing " + mänguRing);
 				System.out.println("veeretamisVoor " + veeretamisVoor);
 				
-				täringud = tops.viskering(täringuteValik);	
-				täringuteAla.add(new GaafilineTäring(täringud.get(0).getVise()).getTäring(), 0, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(1).getVise()).getTäring(), 1, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(2).getVise()).getTäring(), 2, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(3).getVise()).getTäring(), 3, 0);
-				täringuteAla.add(new GaafilineTäring(täringud.get(4).getVise()).getTäring(), 4, 0);
+				täringud = tops.viskering(täringuteValik);
+				Pane t1 = new GraafilineTäring(täringud.get(0).getVise()).getTäring();
+				Pane t2 = new GraafilineTäring(täringud.get(1).getVise()).getTäring();
+				Pane t3 = new GraafilineTäring(täringud.get(2).getVise()).getTäring();
+				Pane t4 = new GraafilineTäring(täringud.get(3).getVise()).getTäring();
+				Pane t5 = new GraafilineTäring(täringud.get(4).getVise()).getTäring();
+				täringuteAla.add(t1, 0, 0);
+				täringuteAla.add(t2, 1, 0);
+				täringuteAla.add(t3, 2, 0);
+				täringuteAla.add(t4, 3, 0);
+				täringuteAla.add(t5, 4, 0);
 
 				// Kolmanda veeretamise järel läheb käiku
 				if (veeretamisVoorud.isEmpty()) {
@@ -242,10 +245,7 @@ public class PeaKlass extends Application {
 					peaLava.show();
 
 					mänguRing = mänguRingid.poll();
-					veeretamisVoorud.add("1. veeretamine");
-					veeretamisVoorud.add("2. veeretamine");
-					veeretamisVoorud.add("3. veeretamine");
-					veeretamisVoorud.add("");
+					veeretamisVoorud.addAll(Arrays.asList("1. veeretamine", "2. veeretamine", "3. veeretamine", ""));
 					veeretamisVoor = veeretamisVoorud.poll();
 					System.out.println("Uus mänguRing nr. " + mänguRing);
 					infoAla.setText(mänguRing + "\n" + veeretamisVoor);
@@ -266,7 +266,7 @@ public class PeaKlass extends Application {
 					Button salvestaNupp = new Button("Salvesta skoor");
 					vBox2.getChildren().add(salvestaNupp);
 
-
+					// TODO faili salvestamine
 					salvestaNupp.setOnMouseClicked(e->{
 						try {
 							mängija.salvestaSkoorFaili("YahtzeeSkoor.txt");
@@ -283,13 +283,6 @@ public class PeaKlass extends Application {
 		});
 
 
-		// Seda kas üldse ongi vaja?
-		// Kasutaja sisendi ala. Siia siis keyboardi evendid 
-		// Nime sisestamine, mis skooritabeli reale tulemus salvestada
-		TextArea sisendiAla = new TextArea();
-		sisendiAla.setPrefSize(laius - 1, kõrgus/7);	
-		vBox.getChildren().add(sisendiAla);
-
 		// Esimese vooru info näitamine
 		mänguRing = mänguRingid.poll();
 		veeretamisVoor = veeretamisVoorud.poll();
@@ -299,89 +292,7 @@ public class PeaKlass extends Application {
 		peaLava.setScene(stseen);
 		peaLava.show();
 
-
-
-
-
-		/*
-		// Mängijate lisamine
-		System.out.println("Palun sisesta mängijate nimed.");
-		for (int i = 1; i <= mängijateArv; i++) {
-			System.out.println("Mängija nr. " + i);
-			kasutajaSisend = scKasutajalt.nextLine();			
-			yatzyMäng.lisaMängija(new Mängija(kasutajaSisend));
-		}
-
-		List<Mängija> mängijad = yatzyMäng.getMängijad();
-
-
-		// Mängutsükkel, iga mängija teeb 12 käiku.
-		// Mängija saab valida, millisesse lahtrisse tulemus lisada.
-		while (mänguVoor <= 12) {
-
-			System.out.println("Mänguvoor " + mänguVoor);
-
-			for (Mängija mängija : mängijad) {
-				System.out.println("Mängija " + mängija.getMängijaNimi() + " kord.");
-
-				// Mängijal on võimalik kolm korda täringuid veeretada.
-				for (int j = 1; j < 4; j++) {
-
-					System.out.println(mängija.getMängijaNimi() +  " veeretamisvoor " + j);
-
-					// Esimeses voorus veeretatakse kõiki täringuid
-					if (j==1) {
-						tops.viskering();
-					}
-					else {
-
-						// Täringute uuesti veeretamise valik.
-						// Küsib kasutajalt sõne ja lubatud väärtusi otsides moodustab hulga (set) numbritest 1-5.
-						// Enter lubab mänguringi lõpetada (tsüklist väljuda) 
-
-						System.out.println("Vali uuesti veeretatavad täringud (Näiteks täringute 1 ja 4 uuesti veeretamiseks: 14)"
-								+ "\nKui uuesti veeretada ei taha, vajuta midagi sisestamata Enter.");
-
-						kasutajaSisend = scKasutajalt.nextLine();
-
-						// Kasutaja ei taha veeretada
-						if (kasutajaSisend.equals("")){
-							break;
-						}
-						// kasutaja sisendist otsitakse Stringe 1-5
-						for (String s : valikud) {
-							if (kasutajaSisend.contains(s))
-								täringuteValik.add(s);						
-						}
-
-						// Topsis olevad täringud
-						tops.viskering(täringuteValik);						
-
-						System.out.println("Voor " + j + " sai läbi");
-
-						// valikud puhtaks
-						täringuteValik.clear();
-					} // else lõpp
-
-				} // for lõpp
-
-
-				// Skoori salvestamine
-				// System.out.println("Salvestan tulemuse");
-				mängija.salvestaTulemus(tops.getTäringud(), scKasutajalt);
-				System.out.println("Näitan tabelit\n" + mängija.getSkooriTabel());
-
-			}
-			mänguVoor += 1;		
-
-		}
-		scKasutajalt.close();
-
-		for (Mängija mängija : mängijad) {
-			System.out.println("Lõpptabel\n" + mängija.getSkooriTabel());
-		}*/
-		
-		
+	
 		
 		
 	}
