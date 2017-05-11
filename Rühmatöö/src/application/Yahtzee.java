@@ -27,19 +27,16 @@ public class Yahtzee {
 
 
 	// Mängujuhendi näitamine
-	public String näitaJuhendit() {
+	public String näitaJuhendit() throws FileNotFoundException {
 		String juhend = "";
 		File fail = new File(juhendiFail);
-		Scanner sc = null;
-		try {
-			sc = new Scanner(fail);
+		try(Scanner sc = new Scanner(fail)) {
+			
 			juhend = loeFailist(sc);
 
 		} catch (FileNotFoundException e) {
-			System.out.println("Juhendit ei leitud");;
-		} finally {
-			sc.close();
-		}		
+		 throw new FileNotFoundException();
+		} 		
 
 		System.out.println(juhend);
 		return juhend;
