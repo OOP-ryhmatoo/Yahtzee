@@ -102,7 +102,12 @@ public class PeaKlass extends Application {
 				juhend.setWrapText(true);
 				juhend.setPrefHeight(700);
 				vBox.getChildren().add(juhend);
-				juhend.setText(yatzyMäng.näitaJuhendit());
+				try{
+					juhend.setText(yatzyMäng.näitaJuhendit());
+				} catch (FileNotFoundException e) {
+					juhend.setPrefHeight(50);
+					juhend.setText("Juhendit ei leitud, ei saa reegleid näidata.");
+				}
 
 				Button sulgeNupp = new Button("Sulge");
 				vBox.getChildren().add(sulgeNupp);
@@ -266,14 +271,61 @@ public class PeaKlass extends Application {
 					Button salvestaNupp = new Button("Salvesta skoor");
 					vBox2.getChildren().add(salvestaNupp);
 
-					// TODO faili salvestamine
-					salvestaNupp.setOnMouseClicked(e->{
-						try {
-							mängija.salvestaSkoorFaili("YahtzeeSkoor.txt");
-						} catch (IOException e1) {
-							System.out.println("Skoor ei salvestunud.");
-						}
-			        });
+					salvestaNupp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						
+						
+						@Override
+						public void handle(MouseEvent me) {
+							
+							try {
+								//salvestab faili
+								mängija.salvestaSkoorFaili("YahtzeeSkoor.txt");
+								
+							} catch (IOException e1) {
+								// kui ei õnnestunud salvestada, siis vastav aken ja sulgub
+								Stage failed = new Stage();
+								VBox vBox4 =new VBox(10);	
+								TextArea  ebaõnnestus= new TextArea();
+								ebaõnnestus.setEditable(false);
+								vBox4.getChildren().add(ebaõnnestus);
+								ebaõnnestus.setText("Sinu skoori ei õnnestunud salvestada teadmata põhjusel, äkki veab teine kord paremini");
+								Button failedSulge = new Button("Sulge");
+								vBox4.getChildren().add(failedSulge);
+								Scene stseen5 = new Scene(vBox4, 200, 100);
+								failed.setScene(stseen5);
+								failed.show();
+								failedSulge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+									@Override
+									public void handle(MouseEvent me) {
+										failed.close();
+										mänguLõpp.close();
+										peaLava.close();
+									}
+							});
+							} // catch lõpp
+							//Teavitab salvestamise õnnestumisest
+							mänguLõpp.hide();
+							Stage salvestamine = new Stage();
+							VBox vBox3 = new VBox(10);	
+							TextArea  salvestatud= new TextArea();
+							salvestatud.setEditable(false);
+							vBox3.getChildren().add(salvestatud);
+							salvestatud.setText("Skoor on salvestatud.");
+							Button sulgeMäng = new Button("Sulge");
+							vBox3.getChildren().add(sulgeMäng);
+							Scene stseen4 = new Scene(vBox3, 200, 100);
+							salvestamine.setScene(stseen4);
+							salvestamine.show();
+							//sulgeb programmi
+							sulgeMäng.setOnMouseClicked(new EventHandler<MouseEvent>() {
+								@Override
+								public void handle(MouseEvent me) {
+									salvestamine.close();
+									mänguLõpp.close();
+									peaLava.close();
+								}
+							});
+			        }});
 
 					Scene stseen3 = new Scene(vBox2, 400, 650);
 					mänguLõpp.setScene(stseen3);
